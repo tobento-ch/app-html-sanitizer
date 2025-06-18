@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Tobento\App\HtmlSanitizer;
 
 use Psr\Container\ContainerInterface;
+use Stringable;
 use Tobento\Service\HelperFunction\Functions;
 use Tobento\App\HtmlSanitizer\HtmlSanitizersInterface;
 
@@ -22,15 +23,19 @@ if (!function_exists(__NAMESPACE__.'\sanitizeHtml')) {
      * Sanitizes an untrusted HTML.
      * This method is NOT context sensitive.
      *
-     * @param string $html
+     * @param mixed $html
      * @param null|string $sanitizer
      * @return string
      */
-    function sanitizeHtml(string $html, null|string $sanitizer = null): string
+    function sanitizeHtml(mixed $html, null|string $sanitizer = null): string
     {
         $sanitizers = Functions::get(ContainerInterface::class)->get(HtmlSanitizersInterface::class);
         
-        return $sanitizers->get($sanitizer)->sanitize($html);
+        if (is_string($html) || $html instanceof Stringable) {
+            return $sanitizers->get($sanitizer)->sanitize($html);
+        }
+        
+        return '';
     }
 }
 if (!function_exists(__NAMESPACE__.'\sanitizeHtmlFor')) {
@@ -39,14 +44,18 @@ if (!function_exists(__NAMESPACE__.'\sanitizeHtmlFor')) {
      * This method is context sensitive.
      *
      * @param string $element
-     * @param string $html
+     * @param mixed $html
      * @param null|string $sanitizer
      * @return string
      */
-    function sanitizeHtmlFor(string $element, string $html, null|string $sanitizer = null): string
+    function sanitizeHtmlFor(string $element, mixed $html, null|string $sanitizer = null): string
     {
         $sanitizers = Functions::get(ContainerInterface::class)->get(HtmlSanitizersInterface::class);
         
-        return $sanitizers->get($sanitizer)->sanitizeFor($element, $html);
+        if (is_string($html) || $html instanceof Stringable) {
+            return $sanitizers->get($sanitizer)->sanitizeFor($element, $html);
+        }
+        
+        return '';
     }
 }

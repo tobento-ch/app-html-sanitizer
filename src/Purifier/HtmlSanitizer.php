@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Tobento\App\HtmlSanitizer\Purifier;
 
 use HTMLPurifier;
+use Stringable;
 use Tobento\App\HtmlSanitizer\Exception\HtmlSanitizeException;
 use Tobento\App\HtmlSanitizer\HtmlSanitizerInterface;
 
@@ -57,12 +58,12 @@ class HtmlSanitizer implements HtmlSanitizerInterface
      * Sanitizes an untrusted HTML.
      * This method is NOT context sensitive.
      *
-     * @param string $html
+     * @param string|Stringable $html
      * @return string
      */
-    public function sanitize(string $html): string
+    public function sanitize(string|Stringable $html): string
     {
-        return $this->purifier->purify($html);
+        return $this->purifier->purify((string)$html);
     }
     
     /**
@@ -70,10 +71,10 @@ class HtmlSanitizer implements HtmlSanitizerInterface
      * This method is context sensitive.
      *
      * @param string $element
-     * @param string $html
+     * @param string|Stringable $html
      * @return string
      */
-    public function sanitizeFor(string $element, string $html): string
+    public function sanitizeFor(string $element, string|Stringable $html): string
     {
         throw new HtmlSanitizeException('Not supported');
     }

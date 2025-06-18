@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Tobento\App\HtmlSanitizer\Boot;
 
 use Psr\Container\ContainerInterface;
+use Stringable;
 use Tobento\App\Boot;
 use Tobento\App\Boot\Config;
 use Tobento\App\Boot\Functions;
@@ -91,15 +92,19 @@ class HtmlSanitizer extends Boot
      * Sanitizes an untrusted HTML.
      * This method is NOT context sensitive.
      *
-     * @param string $html
+     * @param mixed $html
      * @param null|string $sanitizer
      * @return string
      */
-    public function sanitize(string $html, null|string $sanitizer = null): string
+    public function sanitize(mixed $html, null|string $sanitizer = null): string
     {
         $sanitizers = $this->app->get(HtmlSanitizersInterface::class);
         
-        return $sanitizers->get($sanitizer)->sanitize($html);
+        if (is_string($html) || $html instanceof Stringable) {
+            return $sanitizers->get($sanitizer)->sanitize($html);
+        }
+        
+        return '';
     }
     
     /**
@@ -107,14 +112,18 @@ class HtmlSanitizer extends Boot
      * This method is context sensitive.
      *
      * @param string $element
-     * @param string $html
+     * @param mixed $html
      * @param null|string $sanitizer
      * @return string
      */
-    public function sanitizeFor(string $element, string $html, null|string $sanitizer = null): string
+    public function sanitizeFor(string $element, mixed $html, null|string $sanitizer = null): string
     {
         $sanitizers = $this->app->get(HtmlSanitizersInterface::class);
         
-        return $sanitizers->get($sanitizer)->sanitizeFor($element, $html);
+        if (is_string($html) || $html instanceof Stringable) {
+            return $sanitizers->get($sanitizer)->sanitizeFor($element, $html);
+        }
+        
+        return '';
     }
 }

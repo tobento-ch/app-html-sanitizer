@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Tobento\App\HtmlSanitizer;
 
+use Stringable;
+
 /**
  * HtmlSanitizerInterface
  */
@@ -29,18 +31,18 @@ interface HtmlSanitizerInterface
      * Sanitizes an untrusted HTML.
      * This method is NOT context sensitive.
      *
-     * @param string $html
+     * @param string|Stringable $html
      * @return string
      */
-    public function sanitize(string $html): string;
+    public function sanitize(string|Stringable $html): string;
     
     /**
      * Sanitizes an untrusted HTML.
      * This method is context sensitive.
      *
      * @param string $element
-     * @param string $html
+     * @param string|Stringable $html
      * @return string
      */
-    public function sanitizeFor(string $element, string $html): string;
+    public function sanitizeFor(string $element, string|Stringable $html): string;
 }
