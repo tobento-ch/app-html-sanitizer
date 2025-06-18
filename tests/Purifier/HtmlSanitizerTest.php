@@ -19,6 +19,7 @@ use PHPUnit\Framework\TestCase;
 use Tobento\App\HtmlSanitizer\Exception\HtmlSanitizeException;
 use Tobento\App\HtmlSanitizer\HtmlSanitizerInterface;
 use Tobento\App\HtmlSanitizer\Purifier\HtmlSanitizer;
+use Tobento\App\HtmlSanitizer\Test\Html;
 
 class HtmlSanitizerTest extends TestCase
 {
@@ -54,6 +55,8 @@ class HtmlSanitizerTest extends TestCase
             '<p>lorem</p>',
             $this->createSanitizer()->sanitize(html: '<p>lorem<script>alert(1)</script></p>')
         );
+        
+        $this->assertSame('html', $this->createSanitizer()->sanitize(html: new Html()));
     }
     
     public function testSanitizeForMethodThrowsHtmlSanitizeExceptionAsNotSupported()

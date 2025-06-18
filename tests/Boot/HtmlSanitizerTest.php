@@ -19,6 +19,7 @@ use Tobento\App\AppInterface;
 use Tobento\App\HtmlSanitizer\Boot\HtmlSanitizer;
 use Tobento\App\HtmlSanitizer\HtmlSanitizerInterface;
 use Tobento\App\HtmlSanitizer\HtmlSanitizersInterface;
+use Tobento\App\HtmlSanitizer\Test\Html;
 use Tobento\Service\View\ViewInterface;
 use Tobento\Service\Filesystem\Dir;
 use function Tobento\App\HtmlSanitizer\{sanitizeHtml, sanitizeHtmlFor};
@@ -80,6 +81,10 @@ class HtmlSanitizerTest extends TestCase
             '<p>lorem</p>',
             $view->sanitizeHtml(html: '<p>lorem<script>alert(1)</script></p>', sanitizer: 'foo')
         );
+        
+        $this->assertSame('html', $view->sanitizeHtml(html: new Html()));
+        $this->assertSame('', $view->sanitizeHtml(html: []));
+        $this->assertSame('', $view->sanitizeHtml(html: 456));
     }
     
     public function testSanitizeHtmlForViewMacro()
@@ -109,6 +114,10 @@ class HtmlSanitizerTest extends TestCase
             '<p>lorem</p>',
             sanitizeHtml(html: '<p>lorem<script>alert(1)</script></p>', sanitizer: 'foo')
         );
+        
+        $this->assertSame('html', sanitizeHtml(html: new Html()));
+        $this->assertSame('', sanitizeHtml(html: []));
+        $this->assertSame('', sanitizeHtml(html: 456));
     }
     
     public function testSanitizeHtmlForFunction()
