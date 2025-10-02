@@ -16,6 +16,7 @@ App HTML Sanitizer to sanitize untrusted HTML code.
         - [Sanitizing HTML using Function](#sanitizing-html-using-function)
     - [Available Sanitizers](#available-sanitizers)
         - [Purifier Sanitizer](#purifier-sanitizer)
+        - [Symfony Sanitizer](#symfony-sanitizer)
     - [Adding Sanitizers](#adding-sanitizers)
 - [Credits](#credits)
 ___
@@ -30,7 +31,7 @@ composer require tobento/app-html-sanitizer
 
 ## Requirements
 
-- PHP 8.0 or greater
+- PHP 8.4 or greater
 
 # Documentation
 
@@ -53,7 +54,7 @@ use Tobento\App\HtmlSanitizer\HtmlSanitizerInterface;
 use Tobento\App\HtmlSanitizer\HtmlSanitizersInterface;
 
 // Create the app
-$app = (new AppFactory())->createApp();
+$app = new AppFactory()->createApp();
 
 // Add directories:
 $app->dirs()
@@ -143,6 +144,12 @@ $safeHtml = sanitizeHtmlFor(element: 'h1', html: $html, sanitizer: 'name');
 
 ### Purifier Sanitizer
 
+First, you will need to install it:
+
+```
+composer require ezyang/htmlpurifier
+```
+
 This HTML sanitizer uses the [Ezyang HTML Purifier](https://github.com/ezyang/htmlpurifier).
 
 In the [Sanitizer Config](#sanitizer-config) file, you can configure this sanitizer using the ```Purifier\HtmlSanitizerFactory::class```:
@@ -163,6 +170,29 @@ return [
 ```
 
 Visit the [Ezyang HTML Purifier](https://github.com/ezyang/htmlpurifier) for more information.
+
+### Symfony Sanitizer
+
+This HTML sanitizer uses the [Symfony HTML Sanitizer](https://github.com/symfony/html-sanitizer) which is the default sanitizer, no need to install.
+
+In the [Sanitizer Config](#sanitizer-config) file, you can configure this sanitizer using the ```Symfony\HtmlSanitizerFactory::class```:
+
+```php
+use Tobento\App\HtmlSanitizer\Symfony;
+
+return [
+    'sanitizers' => [
+        'default' => new Symfony\HtmlSanitizerFactory(
+            htmlSanitizerConfig: new HtmlSanitizerConfig()
+                ->allowSafeElements()
+                ->allowAttribute('class', '*')
+                ->forceAttribute('a', 'rel', 'noopener noreferrer')
+        ),
+    ],
+];
+```
+
+Visit the [Symfony HTML Sanitizer](https://github.com/symfony/html-sanitizer) for more information.
 
 ## Adding Sanitizers
 
