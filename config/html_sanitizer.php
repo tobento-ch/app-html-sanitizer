@@ -9,8 +9,10 @@
  * @link        https://www.tobento.ch
  */
 
+use Symfony\Component\HtmlSanitizer\HtmlSanitizerConfig;
 use Tobento\App\HtmlSanitizer\HtmlSanitizerInterface;
 use Tobento\App\HtmlSanitizer\Purifier;
+use Tobento\App\HtmlSanitizer\Symfony;
 use function Tobento\App\{directory};
 
 return [
@@ -28,11 +30,18 @@ return [
     */
     
     'sanitizers' => [
-        'default' => new Purifier\HtmlSanitizerFactory([
+        'default' => new Symfony\HtmlSanitizerFactory(
+            htmlSanitizerConfig: new HtmlSanitizerConfig()
+                ->allowSafeElements()
+                ->allowAttribute('class', '*')
+                ->forceAttribute('a', 'rel', 'noopener noreferrer')
+        ),
+        
+        /*'default' => new Purifier\HtmlSanitizerFactory([
             'Cache.SerializerPath' => directory('app').'storage/html-sanitizer/purifier',
             'Cache.SerializerPermissions' => 0755,
             'Attr.AllowedFrameTargets' => ['_blank'],
-        ]),
+        ]),*/
         
         // Using a closure:
         /*'another' => static function (string $name): HtmlSanitizerInterface {
