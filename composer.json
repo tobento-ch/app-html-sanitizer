@@ -1,6 +1,6 @@
 {
     "name": "tobento/app-html-sanitizer",
-    "version": "2.0",
+    "version": "2.0.1",
     "type": "library",
     "description": "App html sanitizer to sanitize untrusted HTML code.",
     "keywords": [
