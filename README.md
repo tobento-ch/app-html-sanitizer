@@ -178,6 +178,7 @@ This HTML sanitizer uses the [Symfony HTML Sanitizer](https://github.com/symfony
 In the [Sanitizer Config](#sanitizer-config) file, you can configure this sanitizer using the ```Symfony\HtmlSanitizerFactory::class```:
 
 ```php
+use Symfony\Component\HtmlSanitizer\HtmlSanitizerConfig;
 use Tobento\App\HtmlSanitizer\Symfony;
 
 return [
