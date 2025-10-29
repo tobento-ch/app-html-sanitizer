@@ -34,6 +34,7 @@ return [
             htmlSanitizerConfig: new HtmlSanitizerConfig()
                 ->allowSafeElements()
                 ->allowAttribute('class', '*')
+                ->allowRelativeLinks(true)
                 ->forceAttribute('a', 'rel', 'noopener noreferrer')
         ),
         
